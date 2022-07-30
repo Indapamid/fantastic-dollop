@@ -12,7 +12,12 @@ export default class Lines extends Phaser.GameObjects.Sprite {
   }
 
   rotationLine() {
+    
     this.position.turn += 90;
     this.angle = this.position.turn;
+    console.log(this.position.turn);
+    if (this.position.turn >= 360) {
+      this.position.turn = 0;
+    }
   }
 }
