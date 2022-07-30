@@ -1,3 +1,6 @@
+import Phaser from 'phaser';
+import GameScene from "./scenes/GameScene";
+
 // async function getElma() {
 //   let body_data = {
 //     difficulty: "Senior",
@@ -19,14 +22,14 @@
 // const filledArray = Array(length).fill({ value: 0 });
 // for (let el of filledArray) {
 //   getElma();
-// } 
+// }
 
 
-let config = {
-  type: Phaser.AUTO,
-  width: 360,
-  heigth: 768,
-  scene: new GameScene(),
+const config = {
+	type: Phaser.AUTO,
+	width: 360,
+	height: 768,
+	scene: [GameScene],
 };
 
-let game = new Phaser.Game(config);
+export default new Phaser.Game(config)
