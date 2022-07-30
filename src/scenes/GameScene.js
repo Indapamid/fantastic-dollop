@@ -1,26 +1,12 @@
 import Phaser from "phaser";
 import Lines from "../sprites/Lines";
+import {Button} from "../sprites/Button";
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super("Game");
   }
-  async realPeload() {
-    let body_data = {
-      difficulty: "easy",
-    };
-    const response = await fetch(
-      "https://es44wtsfdvbnc.elma365.ru/api/extensions/b1e9ad10-7c90-4758-88c8-48f5605d3ea4/script/create_game",
-      {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer 3bff3123-17a2-407a-bcdb-f25a0291bbea",
-        },
-        body: JSON.stringify(body_data),
-      }
-    );
-    return await response.json();
-  }
+
   preload() {
     let xhr = new XMLHttpRequest();
 
@@ -33,10 +19,12 @@ export default class GameScene extends Phaser.Scene {
       "https://es44wtsfdvbnc.elma365.ru/api/extensions/b1e9ad10-7c90-4758-88c8-48f5605d3ea4/script/create_game",
       false
     );
+
     xhr.setRequestHeader(
       "Authorization",
       "Bearer 3bff3123-17a2-407a-bcdb-f25a0291bbea"
     );
+
     xhr.send(body_data);
 
     xhr.onload = function () {
@@ -45,7 +33,10 @@ export default class GameScene extends Phaser.Scene {
         return;
       }
     };
+
     this.response = JSON.parse("[" + xhr.response + "]")[0];
+
+    this.load.spritesheet('buttonTaskInfo', 'assets/image/button.png', { frameWidth: 193, frameHeight: 71 })
     this.load.image("background", "assets/image/background.png");
     this.load.image("start", "assets/image/start.png");
     this.load.image("task", "assets/image/task.png");
@@ -59,12 +50,16 @@ export default class GameScene extends Phaser.Scene {
     this.load.image("t_angle", "assets/image/lineT.png");
 
     this.load.audio("pop", "assets/sound/sound_pop.aiff");
-    console.log(this.response);
   }
+
   create() {
     this.createSounds();
     this.createLines();
     this.createBlock();
+
+    let btn1 = new Button(this, this.sys.canvas.width - 90, 40, 'buttonTaskInfo', this.actionOnClick, 2, 1, 0);
+    btn1.setOrigin(0);
+
   }
 
   createSounds() {
@@ -114,19 +109,19 @@ export default class GameScene extends Phaser.Scene {
     //   { x: 300, y: 180, img: "ellipse", turn: 90 },
     // ];
     let positions = [];
-    this.response.forEach((str, indexStr) => {
-      str.forEach((el, index) => {
-        if (el.line != null) {
-          let pos = {
-            x: index * 120 + 60,
-            y: indexStr * 120 + 60,
-            img: `${el.line}`,
-            turn: el.direction[0],
-          };
-          positions.push(pos);
-        }
-      });
-    });
+    // this.response.forEach((str, indexStr) => {
+    //   str.forEach((el, index) => {
+    //     if (el.line != null) {
+    //       let pos = {
+    //         x: index * 120 + 60,
+    //         y: indexStr * 120 + 60,
+    //         img: `${el.line}`,
+    //         turn: el.direction[0],
+    //       };
+    //       positions.push(pos);
+    //     }
+    //   });
+    // });
 
     return positions;
   }
@@ -165,19 +160,19 @@ export default class GameScene extends Phaser.Scene {
     // positions = positions.concat(defaultEl);
 
     let positions = [];
-    this.response.forEach((str, indexStr) => {
-      str.forEach((el, index) => {
-        if (el.block != null) {
-          let pos = {
-            x: index * 120 + 60,
-            y: indexStr * 120 + 60,
-            img: `${el.block}`,
-            turn: el.directio,
-          };
-          positions.push(pos);
-        }
-      });
-    });
+    // this.response.forEach((str, indexStr) => {
+    //   str.forEach((el, index) => {
+    //     if (el.block != null) {
+    //       let pos = {
+    //         x: index * 120 + 60,
+    //         y: indexStr * 120 + 60,
+    //         img: `${el.block}`,
+    //         turn: el.directio,
+    //       };
+    //       positions.push(pos);
+    //     }
+    //   });
+    // });
 
     return positions;
   }
