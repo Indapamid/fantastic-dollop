@@ -19,7 +19,6 @@ export default class Lines extends Phaser.GameObjects.Sprite {
     if (this.position.turn >= 360) {
       this.position.turn = 0;
     }
-    console.log(this.reference);
     let numElref = 0;
     this.reference.forEach((el) => {
       if (el.bool) {
@@ -29,16 +28,10 @@ export default class Lines extends Phaser.GameObjects.Sprite {
     console.log(numElref);
     let numEl = 0;
     this.scene.lines.forEach((el, index) => {
-      // if(this.reference[index].img == 'line'){
-      //   if(el._displayOriginX == this.reference[index].x && el._displayOriginY == this.reference[index].y && this.reference[index].bool ){
-      //     if(el.position.turn == this.reference[index].turn || el.position.turn == this.reference[index].turn+180 )
-      //     numEl+=1
-      //   }
-      // }else if(el._displayOriginX == this.reference[index].x && el._displayOriginY == this.reference[index].y && el.position.turn == this.reference[index].turn && this.reference[index].bool ){
-      //   numEl+=1
-      // }
-
-      if (this.reference[index].bool && this.reference[index].img == "line") {
+      if (
+        this.reference[index].bool &&
+        this.reference[index].img == "line"
+      ) {
         if (
           el.position.turn == this.reference[index].turn ||
           el.position.turn == this.reference[index].turn + 180
@@ -55,9 +48,13 @@ export default class Lines extends Phaser.GameObjects.Sprite {
     });
     console.log(numEl);
     if (numEl == numElref) {
-      console.log("true");
+      this.scoreText = this.scene.add.text(10, 10, "Процесс опубликован", {
+        fontSize: "32px",
+        fill: "#111111",
+      });
     }
   }
+
   // this.scoreText = this.add.text(16, 16, "score: 0", {
   //   fontSize: "32px",
   //   fill: "#000",

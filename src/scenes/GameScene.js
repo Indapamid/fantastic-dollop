@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import Lines from "../sprites/Lines";
-import {Button} from "../sprites/Button";
+import { Button } from "../sprites/Button";
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -36,7 +36,10 @@ export default class GameScene extends Phaser.Scene {
 
     this.response = JSON.parse("[" + xhr.response + "]")[0];
 
-    this.load.spritesheet('buttonTaskInfo', 'assets/image/button.png', { frameWidth: 193, frameHeight: 71 })
+    this.load.spritesheet("buttonTaskInfo", "assets/image/button.png", {
+      frameWidth: 193,
+      frameHeight: 71,
+    });
     this.load.image("background", "assets/image/background.png");
     this.load.image("start", "assets/image/start.png");
     this.load.image("task", "assets/image/task.png");
@@ -57,12 +60,53 @@ export default class GameScene extends Phaser.Scene {
     this.createLines();
     this.createBlock();
 
-
-    let btn1 = new Button(this, this.sys.canvas.width - 90, 40, 'buttonTaskInfo', this.actionOnClick, 2, 1, 0);
+    let btn1 = new Button(
+      this,
+      this.sys.canvas.width - 60,
+      720,
+      "buttonTaskInfo",
+      this.actionOnClick,
+      2,
+      1,
+      0
+    );
     btn1.setOrigin(0);
-
   }
-
+  // actionOnClick() {
+  //   let numElref = 0;
+  //   positionsLines.truePositions.forEach((el) => {
+  //     if (el.bool) {
+  //       numElref += 1;
+  //     }
+  //   });
+  //   console.log(numElref);
+  //   let numEl = 0;
+  //   this.scene.lines.forEach((el, index) => {
+  //     if (
+  //       positionsLines.truePositions[index].bool &&
+  //       positionsLines.truePositions[index].img == "line"
+  //     ) {
+  //       if (
+  //         el.position.turn == positionsLines.truePositions[index].turn ||
+  //         el.position.turn == positionsLines.truePositions[index].turn + 180
+  //       ) {
+  //         numEl += 1;
+  //       }
+  //     } else if (
+  //       positionsLines.truePositions[index].img != "line" &&
+  //       el.position.turn == positionsLines.truePositions[index].turn &&
+  //       positionsLines.truePositions[index].bool
+  //     ) {
+  //       numEl += 1;
+  //     }
+  //   });
+  //   console.log(numEl);
+  //   if (numEl == numElref) {
+  //     this.scoreText = this.add.text(16, 16, "score: 0", {
+  //       fontSize: "32px",
+  //     });
+  //   }
+  // }
   createSounds() {
     // this.sounds={
     //   pop:this.sound.add("pop")
@@ -108,7 +152,6 @@ export default class GameScene extends Phaser.Scene {
         }
       });
     });
-
 
     this.response.fake_body.forEach((str, indexStr) => {
       str.forEach((el, index) => {
@@ -181,7 +224,6 @@ export default class GameScene extends Phaser.Scene {
         }
       });
     });
-
 
     return positions;
   }
