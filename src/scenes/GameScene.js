@@ -1,4 +1,7 @@
-class GameScene extends Phaser.Scene {
+import Phaser from 'phaser';
+import Lines from "../sprites/Lines";
+
+export  default class GameScene extends Phaser.Scene {
   constructor() {
     super("Game");
   }

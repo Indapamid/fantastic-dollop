@@ -1,4 +1,6 @@
-class Lines extends Phaser.GameObjects.Sprite {
+import Phaser from 'phaser';
+
+export default class Lines extends Phaser.GameObjects.Sprite {
   constructor(scene, position) {
     super(scene, position.x, position.y, `${position.img}`);
     this.scene = scene;
