@@ -65,6 +65,7 @@ export default class GameScene extends Phaser.Scene {
     this.createSounds();
     this.createLines();
     this.createBlock();
+    console.log(this.scene.scene.lines);
   }
 
   createSounds() {
@@ -78,8 +79,8 @@ export default class GameScene extends Phaser.Scene {
     this.lines = [];
     let positionsLines = this.getLinesPositions();
 
-    for (let position of positionsLines) {
-      this.lines.push(new Lines(this, position));
+    for (let position of positionsLines.positions) {
+      this.lines.push(new Lines(this, position, positionsLines.truePositions));
       // this.add.sprite(position.x, position.y, `${position.img}`);
     }
   }
@@ -93,28 +94,12 @@ export default class GameScene extends Phaser.Scene {
   }
 
   getLinesPositions() {
-    // let positions = [
-    //   { x: 60, y: 60, img: "shortLIne", turn: 0 },
-    //   { x: 180, y: 180, img: "line", turn: 0 },
-    //   { x: 300, y: 60, img: "ellipse", turn: 0 },
-    //   { x: 60, y: 300, img: "line", turn: 0 },
-    //   { x: 180, y: 420, img: "line", turn: 0 },
-    //   { x: 300, y: 300, img: "line", turn: 0 },
-    //   { x: 60, y: 540, img: "line", turn: 0 },
-    //   { x: 180, y: 660, img: "shortLIne", turn: 0 },
-    //   { x: 300, y: 540, img: "line", turn: 0 },
-    //   { x: 180, y: 60, img: "lineT", turn: 0 },
-    //   { x: 60, y: 180, img: "lineT", turn: 90 },
-    //   { x: 180, y: 300, img: "ellipse", turn: 180 },
-    //   { x: 300, y: 420, img: "ellipse", turn: 0 },
-    //   { x: 60, y: 420, img: "lineT", turn: 270 },
-    //   { x: 180, y: 540, img: "ellipse", turn: 90 },
-    //   { x: 300, y: 660, img: "ellipse", turn: 180 },
-    //   { x: 60, y: 660, img: "lineT", turn: 270 },
-    //   { x: 300, y: 180, img: "ellipse", turn: 90 },
-    // ];
-    let positions = [];
-    this.response.forEach((str, indexStr) => {
+    let linePositions = {
+      positions: [],
+      truePositions: [],
+    };
+
+    this.response.main_body.forEach((str, indexStr) => {
       str.forEach((el, index) => {
         if (el.line != null) {
           let pos = {
@@ -122,57 +107,79 @@ export default class GameScene extends Phaser.Scene {
             y: indexStr * 120 + 60,
             img: `${el.line}`,
             turn: el.direction[0],
+            bool: true,
           };
-          positions.push(pos);
+          linePositions.truePositions.push(pos);
         }
       });
     });
 
-    return positions;
+    this.response.fake_body.forEach((str, indexStr) => {
+      str.forEach((el, index) => {
+        if (el.line != null) {
+          let pos = {
+            x: index * 120 + 60,
+            y: indexStr * 120 + 60,
+            img: `${el.line}`,
+            turn: "",
+            bool: false,
+          };
+          linePositions.truePositions.push(pos);
+        }
+      });
+    });
+
+    console.log(linePositions);
+    this.response.main_body.forEach((str, indexStr) => {
+      str.forEach((el, index) => {
+        if (el.line != null) {
+          let num = 0;
+          if (el.line == "line") {
+            num = 2;
+          } else {
+            num = 4;
+          }
+          let numR = Math.ceil(Math.random() * num);
+          if (numR == 4) {
+            numR = 0;
+          }
+          let pos = {
+            x: index * 120 + 60,
+            y: indexStr * 120 + 60,
+            img: `${el.line}`,
+            turn: numR * 90,
+          };
+          linePositions.positions.push(pos);
+        }
+      });
+    });
+    this.response.fake_body.forEach((str, indexStr) => {
+      str.forEach((el, index) => {
+        if (el.line != null) {
+          let num = Math.ceil(Math.random() * 4);
+          let pos = {
+            x: index * 120 + 60,
+            y: indexStr * 120 + 60,
+            img: `${el.line}`,
+            turn: num * 90,
+          };
+          linePositions.positions.push(pos);
+        }
+      });
+    });
+
+    return linePositions;
   }
 
   getBlocksPositions() {
-    // let positions = [
-    //   { x: 180, y: 180, img: "task" },
-    //   { x: 300, y: 60, img: "operation" },
-    //   { x: 60, y: 300, img: "if" },
-    //   { x: 180, y: 420, img: "script" },
-    //   { x: 300, y: 300, img: "script" },
-    //   { x: 60, y: 540, img: "operation" },
-    //   { x: 300, y: 540, img: "task" },
-    // ];
-
-    // let img = [
-    //   "task",
-    //   "operation",
-    //   "if",
-    //   "script",
-    //   "script",
-    //   "operation",
-    //   "task",
-    // ];
-    // Phaser.Utils.Array.Shuffle(img);
-
-    // positions.forEach((element, i) => {
-    //   element.img = img[i];
-    // });
-
-    // let defaultEl = [
-    //   { x: 60, y: 60, img: "start" },
-    //   { x: 180, y: 660, img: "end" },
-    // ];
-
-    // positions = positions.concat(defaultEl);
-
     let positions = [];
-    this.response.forEach((str, indexStr) => {
+    this.response.main_body.forEach((str, indexStr) => {
       str.forEach((el, index) => {
         if (el.block != null) {
           let pos = {
             x: index * 120 + 60,
             y: indexStr * 120 + 60,
             img: `${el.block}`,
-            turn: el.directio,
           };
           positions.push(pos);
         }
@@ -181,4 +188,5 @@ export default class GameScene extends Phaser.Scene {
 
     return positions;
   }
+  update() {}
 }
